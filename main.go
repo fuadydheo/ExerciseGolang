@@ -44,8 +44,10 @@ func getBook(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
-	// BUG: Harusnya menggunakan w.WriteHeader(http.StatusNotFound)
-	http.Error(w, "Book not found", 404) // BUG: Salah status code
+	// BUG: Harusnya menggunakan w.WriteHeader(http.StatusNotFound) => bisa dengan menambahkan 2 baris dibawah
+	w.WriteHeader(http.StatusNotFound)
+	fmt.Fprintf(w, "Book not found")
+	//http.Error(w, "Book not found", 404) // BUG: Salah status code => bisa dengan hanya mengganti menjadi 404
 }
 
 // Handler untuk menambahkan buku baru
