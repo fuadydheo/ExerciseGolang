@@ -50,7 +50,7 @@ func getBook(w http.ResponseWriter, r *http.Request) {
 
 	for _, book := range books {
 		if book.ID == params["id"] {
-			log.Println("Book found:", book.Title)
+			log.Println("Book found: id :"+book.ID+" title :", book.Title)
 			json.NewEncoder(w).Encode(book)
 			return
 		}
@@ -71,8 +71,8 @@ func createBook(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// BUG: Tidak ada validasi untuk memastikan ID unik
-	log.Println("Adding new book:", book.Title)
 	book.ID = fmt.Sprintf("%d", len(books)+1)
+	log.Println("Adding new book: id :"+book.ID+" title :", book.Title)
 	books = append(books, book)
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(book)
@@ -96,7 +96,7 @@ func updateBook(w http.ResponseWriter, r *http.Request) {
 			}
 			updatedBook.ID = params["id"]
 			books = append(books, updatedBook)
-			log.Println("Book updated:", book.Title)
+			log.Println("Book updated: id :", book.ID, " title :", book.Title)
 			json.NewEncoder(w).Encode(updatedBook)
 			return
 		}
