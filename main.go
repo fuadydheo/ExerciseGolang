@@ -83,7 +83,8 @@ func updateBook(w http.ResponseWriter, r *http.Request) {
 				http.Error(w, "Invalid input", http.StatusBadRequest)
 				return
 			}
-			books[index] = updatedBook // BUG: ID lama bisa berubah
+			updatedBook.ID = books[index].ID // Assign ID lama ke variabel baru
+			books[index] = updatedBook       // BUG: ID lama bisa berubah
 			json.NewEncoder(w).Encode(updatedBook)
 			return
 		}
