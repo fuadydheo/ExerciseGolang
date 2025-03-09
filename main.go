@@ -115,7 +115,12 @@ func deleteBook(w http.ResponseWriter, r *http.Request) {
 	for index, book := range books {
 		if book.ID == params["id"] {
 			books = append(books[:index], books[index+1:]...)
-			return // BUG: Tidak ada response JSON yang mengonfirmasi penghapusan
+
+			//perbaikan menambahkan respons json
+			log.Println("Penghapusan Berhasil")
+			w.WriteHeader(http.StatusOK)
+			json.NewEncoder(w).Encode(map[string]string{"message": "Book deleted successfully"})
+			return
 		}
 	}
 	http.Error(w, "Book not found", http.StatusNotFound)
