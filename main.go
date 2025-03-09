@@ -81,7 +81,8 @@ func updateBook(w http.ResponseWriter, r *http.Request) {
 				http.Error(w, "Invalid input", http.StatusBadRequest)
 				return
 			}
-			books[index] = updatedBook // BUG: ID lama bisa berubah
+			updatedBook.ID = book.ID
+			books[index] = updatedBook
 			json.NewEncoder(w).Encode(updatedBook)
 			return
 		}
@@ -99,7 +100,7 @@ func deleteBook(w http.ResponseWriter, r *http.Request) {
 		if book.ID == params["id"] {
 			books = append(books[:index], books[index+1:]...)
 			w.WriteHeader(http.StatusNoContent)
-			return // BUG: Tidak ada response JSON yang mengonfirmasi penghapusan
+			return
 		}
 	}
 	http.Error(w, "Book not found", http.StatusNotFound)
