@@ -49,8 +49,7 @@ func getBook(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
-	// BUG: Harusnya menggunakan w.WriteHeader(http.StatusNotFound)
-	//http.Error(w, "Book not found", 500) // BUG: Salah status code
+
 	// mengubah error ke 404
 	log.Println("Book not found")
 	http.Error(w, "Book not found", http.StatusNotFound)
@@ -98,6 +97,9 @@ func updateBook(w http.ResponseWriter, r *http.Request) {
 				http.Error(w, "Invalid input", http.StatusBadRequest)
 				return
 			}
+			//memastikan id buku gtetap sama
+			updatedBook.ID = book.ID
+			log.Println("Updating book with ID:", params["id"])
 			books[index] = updatedBook // BUG: ID lama bisa berubah
 			json.NewEncoder(w).Encode(updatedBook)
 			return
