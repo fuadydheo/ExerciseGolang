@@ -44,6 +44,7 @@ func getBook(w http.ResponseWriter, r *http.Request) {
 
 	for _, book := range books {
 		if book.ID == params["id"] {
+			log.Println("Book found:", book.Title)
 			json.NewEncoder(w).Encode(book)
 			return
 		}
