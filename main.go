@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/gorilla/mux"
 )
@@ -122,6 +123,19 @@ func deleteBook(w http.ResponseWriter, r *http.Request) {
 	http.Error(w, "Book not found", http.StatusNotFound)
 }
 
+func loggingMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		start := time.Now()
+		log.Printf("[%s] %s %s", r.Method, r.URL.Path, r.RemoteAddr)
+
+		// Lanjutkan ke handler berikutnya
+		next.ServeHTTP(w, r)
+
+		duration := time.Since(start)
+		log.Printf("[%s] %s %s - %v", r.Method, r.URL.Path, r.RemoteAddr, duration)
+	})
+}
+
 // Fungsi utama untuk menjalankan server
 func main() {
 	r := mux.NewRouter()
@@ -150,6 +164,9 @@ func main() {
 	r.HandleFunc("/books", createBook).Methods("POST")
 	r.HandleFunc("/books/{id}", updateBook).Methods("PUT")
 	r.HandleFunc("/books/{id}", deleteBook).Methods("DELETE")
+
+	// middleware
+	r.Use(loggingMiddleware)
 
 	// Jalankan server
 	fmt.Println("Server running on port 8000")
