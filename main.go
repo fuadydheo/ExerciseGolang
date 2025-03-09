@@ -29,7 +29,12 @@ var books []Book
 func getBooks(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	log.Println("Fetching all books")
-	json.NewEncoder(w).Encode(books) // BUG: Tidak menangani kasus ketika books kosong
+	w.WriteHeader(http.StatusOK)
+	if len(books) == 0 {
+		json.NewEncoder(w).Encode([]Book{})
+		return
+	}
+	json.NewEncoder(w).Encode(books)
 }
 
 // Handler untuk mendapatkan detail buku berdasarkan ID
