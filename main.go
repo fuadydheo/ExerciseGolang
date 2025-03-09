@@ -30,6 +30,11 @@ func getBooks(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	log.Println("Fetching all books")
 	json.NewEncoder(w).Encode(books) // BUG: Tidak menangani kasus ketika books kosong
+	//cek apakah book kosong
+	if len(books) == 0 {
+		http.Error(w, `{"message": "No books found"}`, http.StatusNotFound)
+		return
+	}
 }
 
 // Handler untuk mendapatkan detail buku berdasarkan ID
