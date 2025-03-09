@@ -45,7 +45,7 @@ func getBook(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	// BUG: Harusnya menggunakan w.WriteHeader(http.StatusNotFound)
-	http.Error(w, "Book not found", 500) // BUG: Salah status code
+	http.Error(w, "Book not found", http.StatusNotFound) // BUG: Salah status code
 }
 
 // Handler untuk menambahkan buku baru
