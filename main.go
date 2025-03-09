@@ -30,6 +30,7 @@ func getBooks(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	log.Println("Fetching all books")
 	w.WriteHeader(http.StatusOK)
+	log.Println(books)
 	if len(books) == 0 {
 		json.NewEncoder(w).Encode([]Book{})
 		return
@@ -86,6 +87,7 @@ func updateBook(w http.ResponseWriter, r *http.Request) {
 				http.Error(w, "Invalid input", http.StatusBadRequest)
 				return
 			}
+			log.Println(updatedBook)
 			updatedBook.ID = book.ID
 			books[index] = updatedBook
 			json.NewEncoder(w).Encode(updatedBook)
@@ -103,6 +105,7 @@ func deleteBook(w http.ResponseWriter, r *http.Request) {
 
 	for index, book := range books {
 		if book.ID == params["id"] {
+			log.Println(books[index])
 			books = append(books[:index], books[index+1:]...)
 			w.WriteHeader(http.StatusNoContent)
 			return
