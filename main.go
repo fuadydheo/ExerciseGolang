@@ -33,6 +33,12 @@ type response struct {
 func getBooks(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	log.Println("Fetching all books")
+	if len(books) == 0 {
+		log.Println("No books found")
+		w.WriteHeader(http.StatusNoContent)
+		json.NewEncoder(w).Encode(books)
+		return
+	}
 	json.NewEncoder(w).Encode(books) // BUG: Tidak menangani kasus ketika books kosong
 }
 
