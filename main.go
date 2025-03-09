@@ -79,6 +79,7 @@ func updateBook(w http.ResponseWriter, r *http.Request) {
 
 	for index, book := range books {
 		if book.ID == params["id"] {
+			books = append(books[:index], books[index+1:]...)
 			var updatedBook Book
 			err := json.NewDecoder(r.Body).Decode(&updatedBook)
 			if err != nil {
@@ -86,7 +87,9 @@ func updateBook(w http.ResponseWriter, r *http.Request) {
 				http.Error(w, "Invalid input", http.StatusBadRequest)
 				return
 			}
-			books[index] = updatedBook // BUG: ID lama bisa berubah
+			updatedBook.ID = params["id"]
+			books = append(books, updatedBook)
+			log.Println("Book updated:", book.Title)
 			json.NewEncoder(w).Encode(updatedBook)
 			return
 		}
