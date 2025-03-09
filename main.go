@@ -72,6 +72,7 @@ func createBook(w http.ResponseWriter, r *http.Request) {
 
 	// BUG: Tidak ada validasi untuk memastikan ID unik
 	log.Println("Adding new book:", book.Title)
+	book.ID = fmt.Sprintf("%d", len(books)+1)
 	books = append(books, book)
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(book)
