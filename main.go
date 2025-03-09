@@ -103,6 +103,7 @@ func deleteBook(w http.ResponseWriter, r *http.Request) {
 	for index, book := range books {
 		if book.ID == params["id"] {
 			books = append(books[:index], books[index+1:]...)
+			log.Println("Book deleted:", book.Title)
 			w.WriteHeader(http.StatusOK)
 			json.NewEncoder(w).Encode(response{Message: "Book deleted successfully"})
 			return // BUG: Tidak ada response JSON yang mengonfirmasi penghapusan
