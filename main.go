@@ -52,6 +52,7 @@ func getBook(w http.ResponseWriter, r *http.Request) {
 	// BUG: Harusnya menggunakan w.WriteHeader(http.StatusNotFound)
 	//http.Error(w, "Book not found", 500) // BUG: Salah status code
 	// mengubah error ke 404
+	log.Println("Book not found")
 	http.Error(w, "Book not found", http.StatusNotFound)
 
 }
