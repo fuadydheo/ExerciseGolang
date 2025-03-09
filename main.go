@@ -36,7 +36,7 @@ func getBooks(w http.ResponseWriter, r *http.Request) {
 	if len(books) == 0 {
 		log.Println("No books found")
 		w.WriteHeader(http.StatusNoContent)
-		json.NewEncoder(w).Encode(books)
+		json.NewEncoder(w).Encode(response{Message: "No books found"})
 		return
 	}
 	json.NewEncoder(w).Encode(books) // BUG: Tidak menangani kasus ketika books kosong
