@@ -47,7 +47,7 @@ func getBook(w http.ResponseWriter, r *http.Request) {
 	// BUG: Harusnya menggunakan w.WriteHeader(http.StatusNotFound) => bisa dengan menambahkan 2 baris dibawah
 	w.WriteHeader(http.StatusNotFound)
 	fmt.Fprintf(w, "Book not found")
-	//http.Error(w, "Book not found", 404) // BUG: Salah status code => bisa dengan hanya mengganti menjadi 404
+	//http.Error(w, "Book not found", 404) // BUG: Salah status code => bisa dengan hanya mengganti menjadi 404, atau http.StatusNotFound
 }
 
 // Handler untuk menambahkan buku baru
@@ -99,6 +99,7 @@ func deleteBook(w http.ResponseWriter, r *http.Request) {
 
 	for index, book := range books {
 		if book.ID == params["id"] {
+			fmt.Fprintf(w, "Book %s has been deleted", book.Title) //Menambahkan pesan buku dihapus
 			books = append(books[:index], books[index+1:]...)
 			return // BUG: Tidak ada response JSON yang mengonfirmasi penghapusan
 		}
