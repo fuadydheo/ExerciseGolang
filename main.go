@@ -65,6 +65,12 @@ func createBook(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	for _, existingBook := range books {
+		if existingBook.ID == book.ID {
+			http.Error(w, "Book ID already exists", http.StatusConflict)
+			return
+		}
+	}
 	// BUG: Tidak ada validasi untuk memastikan ID unik
 	log.Println("Adding new book:", book.Title)
 	books = append(books, book)
